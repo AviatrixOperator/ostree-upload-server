@@ -1,4 +1,5 @@
-FROM debian:buster-slim
+# FROM debian:buster-slim, ubuntu works but the debian does not work
+FROM ubuntu
 MAINTAINER Endless Services Team <services@endlessm.com>
 LABEL version="0.1"
 
@@ -7,12 +8,25 @@ RUN apt-get update && \
         gir1.2-ostree-1.0 \
         flatpak \
         ostree \
+        libmagic-dev \
+        libevent-dev \
+        libffi-dev \
         python3 \
+        gcc \
+        musl-dev \
+        make \
+        python3-dev \
         python3-cairo \
         python3-gi \
         python3-pip \
+        python-all-dev \
+        # This packages do not exist on ubuntu
+	    # python-gevent \
+        # python-gevent-websocket \
         && \
     apt-get clean
+
+RUN apt-get upgrade
 
 ENV INSTALL_DIR="/opt/ostree-upload-server"
 
@@ -29,6 +43,7 @@ RUN groupadd -r -g 800 ostree-server && \
     useradd -r -u 800 -g 800 ostree-server
 
 COPY . $INSTALL_DIR
+
 RUN chown -R ostree-server:ostree-server $INSTALL_DIR && \
     chmod +x $INSTALL_DIR/ostree-upload-server.py
 
