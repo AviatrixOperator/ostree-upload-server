@@ -8,6 +8,7 @@ RUN apt-get update && \
         gir1.2-ostree-1.0 \
         flatpak \
         ostree \
+        git \
         libmagic-dev \
         libevent-dev \
         libffi-dev \
@@ -44,12 +45,18 @@ RUN groupadd -r -g 800 ostree-server && \
 
 COPY . $INSTALL_DIR
 
+# ARG USER_ID=1000
+# ARG GROUP_ID=1000
+
+# RUN groupadd --system --gid ${GROUP_ID} MY_GROUP && \
+#     useradd --system --uid ${USER_ID} --gid MY_GROUP --home /home/MY_USER --shell /sbin/nologin MY_USER
+
 RUN chown -R ostree-server:ostree-server $INSTALL_DIR && \
     chmod +x $INSTALL_DIR/ostree-upload-server.py
 
 RUN mkdir /repo && \
     chown -R ostree-server:ostree-server /repo
 
-USER ostree-server
+# USER ostree-server
 
-ENTRYPOINT ["/usr/bin/python3", "ostree-upload-server.py"]
+#ENTRYPOINT ["/usr/bin/python3", "ostree-upload-server.py"]
