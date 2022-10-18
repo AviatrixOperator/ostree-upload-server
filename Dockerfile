@@ -57,6 +57,6 @@ RUN chown -R ostree-server:ostree-server $INSTALL_DIR && \
 RUN mkdir /repo && \
     chown -R ostree-server:ostree-server /repo
 
-# USER ostree-server
+USER ostree-server
 
-#ENTRYPOINT ["/usr/bin/python3", "ostree-upload-server.py"]
+ENTRYPOINT ["/usr/bin/python3", "ostree-upload-server.py"]
